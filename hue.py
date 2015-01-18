@@ -24,9 +24,9 @@ gpio.setup(PIN, gpio.IN, pull_up_down=gpio.PUD_UP)
 def callback():
     survey = requests.get(BASE + '/lights')
     survey = json.loads(survey.text)
+    numlights = len(survey)
     # if any are on, turn all off.
-    print len(survey)+1
-    if any([survey[str(x)]['state']['on'] for x in range(1, len(survey)+1)]):
+    if any([survey[str(x)]['state']['on'] for x in range(1, numlights+1)]):
         for light in survey.keys():
             turn(light, False)
         print '[{}] Off'.format(datetime.datetime.now())
