@@ -43,6 +43,8 @@ def turn(light, state):
 def main():
     while True:
         inp = gpio.input(PIN)
+        # pull up resistor will cause inp to be True when button is not
+        # pressed and False when button is pressed
         if not inp:
             callback()
         time.sleep(BUTTON_SLEEP)
