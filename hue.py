@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Turn on and off all your lights at the push of a button."""
+
 import RPi.GPIO as gpio
 import time
 import sys
@@ -22,17 +24,16 @@ gpio.setup(PIN, gpio.IN, pull_up_down=gpio.PUD_UP)
 def callback():
     survey = requests.get(BASE + '/lights')
     survey = json.loads(survey.text)
-    if any([survey[str(x)]['state']['on'] for x in range(1, 4)]):
-        # if any are on, turn all off.
+    # if any are on, turn all off.
+    print len(survey)+1
+    if any([survey[str(x)]['state']['on'] for x in range(1, len(survey)+1)]):
         for light in survey.keys():
             turn(light, False)
         print '[{}] Off'.format(datetime.datetime.now())
-    else:
-        # else if all are off, then all on
+    else:  # else if all are off, then all on
         for light in survey.keys():
             turn(light, True)
         print '[{}] On'.format(datetime.datetime.now())
-
 
 
 def turn(light, state):
